@@ -17,59 +17,55 @@
           <!-- dynamic items goes here. -->  
         </ul>
     </div>
-	<div data-role="footer">
-			<h4>Page Footer</h4>
-	</div>
+    <div data-role="footer">
+            <h4>Page Footer</h4>
+    </div>
 </div>
 
-
-</body>
-
 <script language="javascript" type="text/javascript">
+    /*  Create a page for every fav tweet and append to body.
+        Page is located at "#p + tweet_id".  ex) index.html#p311975360667459585 */
+    function createPage (fav_tweet) {
+        var phtml='';
+        phtml+='<div data-role="page" id="p' + fav_tweet.id_str + '">';
+        phtml+='<div data-role="header">';
+        phtml+='<h1>More Info</h1>';
+        phtml+='</div>';
 
-	/*  Create a page for every fav tweet and append to body.
-		Page is located at "#p + tweet_id".  ex) index.html#p311975360667459585 */
-	function createPage (fav_tweet) {
-		var phtml='';
-		phtml+='<div data-role="page" id="p' + fav_tweet.id_str + '">';
-		phtml+='<div data-role="header">';
-		phtml+='<h1>More Info</h1>';
-		phtml+='</div>';
+        // Page content
+        phtml+='<div data-role="content">';
+        phtml+='<h2>' + fav_tweet.user.name+ '</h2>';
+        phtml+='<p> <b>Twitter id:</b> ' + fav_tweet.user.screen_name +'</p>';
+        phtml+='<p> <b>Created at:</b> ' + fav_tweet.created_at +'</p>';
+        phtml+='<p> <b>Text:</b> ' + fav_tweet.text +'</p>';
+        phtml+='<p> <b>Retweeted count:</b> ' + fav_tweet.retweet_count +'</p>';
 
-		// Page content
-		phtml+='<div data-role="content">';
-		phtml+='<h2>' + fav_tweet.user.name+ '</h2>';
-		phtml+='<p> <b>Twitter id:</b> ' + fav_tweet.user.screen_name +'</p>';
-		phtml+='<p> <b>Created at:</b> ' + fav_tweet.created_at +'</p>';
-		phtml+='<p> <b>Text:</b> ' + fav_tweet.text +'</p>';
-		phtml+='<p> <b>Retweeted count:</b> ' + fav_tweet.retweet_count +'</p>';
+        // Back button
+        phtml+='<p><a href="#" data-rel="back" data-role="button" data-inline="true" data-icon="back">Previous Page</a></p>';
+        phtml+='</div>';
+        phtml+='</div>';
 
-		// Back button
-		phtml+='<p><a href="#" data-rel="back" data-role="button" data-inline="true" data-icon="back">Previous Page</a></p>';
-		phtml+='</div>';
-		phtml+='</div>';
+        $('body').append(phtml);
+    }
 
-		$('body').append(phtml);
-	}
-
-	// Read tweets from file "favs.json"
+    // Read tweets from file "favs.json"
     $.getJSON('favs.json', function (data) {
-    	var fav_tweet;
+        var fav_tweet;
 
-    	// Loop through each favourite tweet
-    	$.each(data, function () {
-    		fav_tweet = this;
+        // Loop through each favourite tweet
+        $.each(data, function () {
+            fav_tweet = this;
 
-    		//var created_at, id, text, source, retweet_count, user_name, user_screen_name, user_url, user_profile_image_url;
-    		// created_at = fav_tweet.created_at;
-    		// id = fav_tweet.id;
-    		// text = fav_tweet.text;
-    		// source = fav_tweet.source;
-    		// retweet_count = fav_tweet.retweet_count;
-    		// user_name = fav_tweet.user.name;
-    		// user_screen_name = fav_tweet.user.screen_name;
-    		// user_url = fav_tweet.user.url;
-    		// user_profile_image_url = fav_tweet.user.profile_image_url;
+            //var created_at, id, text, source, retweet_count, user_name, user_screen_name, user_url, user_profile_image_url;
+            // created_at = fav_tweet.created_at;
+            // id = fav_tweet.id;
+            // text = fav_tweet.text;
+            // source = fav_tweet.source;
+            // retweet_count = fav_tweet.retweet_count;
+            // user_name = fav_tweet.user.name;
+            // user_screen_name = fav_tweet.user.screen_name;
+            // user_url = fav_tweet.user.url;
+            // user_profile_image_url = fav_tweet.user.profile_image_url;
             
             // Create a new page for every fav tweet
             createPage(fav_tweet);
@@ -84,9 +80,11 @@
             shtml=shtml+'</a><a href="#p' + fav_tweet.id_str + '">More Info</a>';
             shtml=shtml+'</li>';
 
-            $('#items').append(shtml);
-    	});
+            $('#items').append(shtml).trigger('create');
+        });
+
+        $('#items').listview("refresh");
     });
 </script>
-
+</body>
 </html>
