@@ -9,12 +9,12 @@
 </head>
 <body>
 
-<div data-role="page">
+<div data-role="page" id="page1">
     <div data-role="header">
         <h1>Home Page</h1>
     </div>
     <div data-role="content">
-        <ul id="items" data-role="listview">
+        <ul id="items1" data-role="listview">
           <!-- dynamic items goes here. -->  
         </ul>
     </div>
@@ -23,10 +23,21 @@
     </div>
 </div>
 
+<!--  nav bar
+    <div data-role="navbar">
+        <ul>
+            <li><a href="#" data-icon="arrow-l" data-iconpos="left">Prev Page</a></li>
+            <li><a href="#">Two</a></li>
+            <li><a href="#" data-icon="arrow-r" data-iconpos="right" >Next Page</a></li>
+        </ul>
+    </div>
+
+-->
+
 <script language="javascript" type="text/javascript">
     /*  Create a page for every fav tweet and append to body.
         Page is located at "#p + tweet_id".  ex) index.html#p311975360667459585 */
-    function createPage (fav_tweet) {
+    function createTweetPage (fav_tweet) {
         var phtml='';
         phtml+='<div data-role="page" id="p' + fav_tweet.id_str + '">';
         phtml+='<div data-role="header">';
@@ -49,29 +60,52 @@
         $('body').append(phtml);
     }
 
+    /*  Create a new list page.
+        Page is located at "#page + page_number".  ex) index.html#page2 */
+    function createListPage (page_number) {
+        var phtml='';
+        phtml+='<div data-role="page" id="page' + page_number + '">';
+        phtml+='<div data-role="header">';
+        phtml+='<h1>Home Page (' + page_number + ')</h1>';
+        phtml+='</div>';
+        phtml+='<div data-role="content">';
+        phtml+='<ul id="items' + page_number + '" data-role="listview">';
+        phtml+='</ul>';
+        phtml+='</div>';
+        phtml+='<div data-role="footer">';
+        phtml+='<h4>Page Footer</h4>';
+        phtml+='</div>';
+        phtml+='</div>';
+        $('body').append(phtml);
+        //$('#page' + page_number).trigger("createpage");
+        //$('#items' + page_number).trigger("create");
+        //$('#items' + page_number).listview("refresh");
+    }
+
     // Read tweets from file "favs.json"
-    $.getJSON('favs.json', function (data) {
+    $.getJSON('favs109.json', function (data) {
+        var currentPage = 1;
+        var currentItem = 0;
+        var itemsPerPage = 9;
         var fav_tweet;
 
         // Loop through each favourite tweet
         $.each(data, function () {
             fav_tweet = this;
-
-            //var created_at, id, text, source, retweet_count, user_name, user_screen_name, user_url, user_profile_image_url;
-            // created_at = fav_tweet.created_at;
-            // id = fav_tweet.id;
-            // text = fav_tweet.text;
-            // source = fav_tweet.source;
-            // retweet_count = fav_tweet.retweet_count;
-            // user_name = fav_tweet.user.name;
-            // user_screen_name = fav_tweet.user.screen_name;
-            // user_url = fav_tweet.user.url;
-            // user_profile_image_url = fav_tweet.user.profile_image_url;
             
-            // Create a new page for every fav tweet
-            createPage(fav_tweet);
+            // Find and create appropiate the page
+            currentItem += 1;
+            if (currentItem > itemsPerPage) {
+                currentPage += 1;
+                currentItem = 1;
+                // Create a new list page
+                createListPage(currentPage);
+            }
 
-            // Append to list
+            // Create a new page for every fav tweet
+            createTweetPage(fav_tweet);
+
+            // Append to page list
             var shtml='';    
             shtml=shtml+'<li><a href=\"#\">';
             shtml=shtml+'<img src=\"'+fav_tweet.user.profile_image_url+'\" />';
@@ -80,11 +114,13 @@
             shtml=shtml+'<p>'+fav_tweet.text+'</p>';
             shtml=shtml+'</a><a href="#p' + fav_tweet.id_str + '">More Info</a>';
             shtml=shtml+'</li>';
-
-            $('#items').append(shtml).trigger('create');
+            $('#items' + currentPage).append(shtml).trigger('create');
+            //$('#items' + currentPage).listview("refresh");
         });
 
-        $('#items').listview("refresh");
+        //$('#page' + currentPage).trigger("createpage");
+        // I am not sure how just refreshing the first page also refreshes all the pages but it works
+        $('#items1').listview("refresh");
     });
 </script>
 </body>
