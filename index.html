@@ -66,6 +66,14 @@
         phtml+='<p> <b>Twitter id:</b> ' + fav_tweet.user.screen_name +'</p>';
         phtml+='<p> <b>Created at:</b> ' + fav_tweet.created_at +'</p>';
         phtml+='<p> <b>Text:</b> ' + htmlifyTweet(fav_tweet) +'</p>';
+        
+        media = fav_tweet.entities.media;
+        if (media) {
+            phtml+='<p> <b>Images:</b> '
+            for (i in media) phtml += '<br /><img src="' + media[i].media_url + '" />';
+            phtml+='</p>';
+        }
+
         phtml+='<p> <b>Retweeted count:</b> ' + fav_tweet.retweet_count +'</p>';
 
         // Back button
