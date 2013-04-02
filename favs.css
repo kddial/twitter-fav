@@ -16,7 +16,7 @@
         padding-left: 10px;
 }
 
-@media all and (min-width: 768px){
+@media screen and (min-width: 768px){
  
    .ui-content {
         padding: 20px;
