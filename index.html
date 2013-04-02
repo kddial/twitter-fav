@@ -77,12 +77,10 @@
         phtml+='</div>';
         phtml+='</div>';
         $('body').append(phtml);
-        //$('#page' + page_number).trigger("createpage");
-        //$('#items' + page_number).trigger("create");
-        //$('#items' + page_number).listview("refresh");
     }
 
     // Read tweets from file "favs.json"
+    // CHANGED TO 'favs109' JUST FOR TESTING, CHANGE BACK TO favs.json WHEN DONE
     $.getJSON('favs109.json', function (data) {
         var currentPage = 1;
         var currentItem = 0;
@@ -115,11 +113,9 @@
             shtml=shtml+'</a><a href="#p' + fav_tweet.id_str + '">More Info</a>';
             shtml=shtml+'</li>';
             $('#items' + currentPage).append(shtml).trigger('create');
-            //$('#items' + currentPage).listview("refresh");
         });
 
-        //$('#page' + currentPage).trigger("createpage");
-        // I am not sure how just refreshing the first page also refreshes all the pages but it works
+        // I am not sure how, but just refreshing the first page also refreshes all the pages
         $('#items1').listview("refresh");
     });
 </script>
