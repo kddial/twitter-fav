@@ -35,6 +35,22 @@
 -->
 
 <script language="javascript" type="text/javascript">
+
+    function htmlifyTweet (tweet) {
+        urls = tweet.entities.urls;
+        text = tweet.text;
+        offset = 0;
+        for (i in urls) {
+            url = urls[i];
+            link = "<a href='" + url.url + "' target='_blank'>" + url.url + "</a>";
+            text = text.substr(0, url.indices[0]+offset) + link + text.substr(url.indices[1]+offset);
+            console.log(url.indices[0]+offset);
+            console.log(url.indices[1]+url.url.length+offset);
+            offset = link.length - url.url.length;
+        }
+        return text;
+    }
+
     /*  Create a page for every fav tweet and append to body.
         Page is located at "#p + tweet_id".  ex) index.html#p311975360667459585 */
     function createTweetPage (fav_tweet) {
@@ -49,7 +65,7 @@
         phtml+='<h2>' + fav_tweet.user.name+ '</h2>';
         phtml+='<p> <b>Twitter id:</b> ' + fav_tweet.user.screen_name +'</p>';
         phtml+='<p> <b>Created at:</b> ' + fav_tweet.created_at +'</p>';
-        phtml+='<p> <b>Text:</b> ' + fav_tweet.text +'</p>';
+        phtml+='<p> <b>Text:</b> ' + htmlifyTweet(fav_tweet) +'</p>';
         phtml+='<p> <b>Retweeted count:</b> ' + fav_tweet.retweet_count +'</p>';
 
         // Back button
@@ -109,7 +125,7 @@
             shtml=shtml+'<img src=\"'+fav_tweet.user.profile_image_url+'\" />';
 
             shtml=shtml+'<h3>'+fav_tweet.user.name+'</h3>';
-            shtml=shtml+'<p>'+fav_tweet.text+'</p>';
+            shtml=shtml+'<p>'+ fav_tweet.text+'</p>';
             shtml=shtml+'</a><a href="#p' + fav_tweet.id_str + '">More Info</a>';
             shtml=shtml+'</li>';
             $('#items' + currentPage).append(shtml).trigger('create');
