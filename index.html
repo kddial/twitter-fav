@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div data-role="page" id="page1" data-next="placeholder">
+<div data-role="page" id="page1">
     <div data-role="header" id="header1">
         <h1>Home Page</h1>
 
@@ -100,7 +100,7 @@
         Page is located at "#page + page_number".  ex) index.html#page2 */
     function createListPage (page_number) {
         var phtml='';
-        phtml+='<div data-role="page" data-next="page' + page_number+1 + '" id="page' + page_number + '">';
+        phtml+='<div data-role="page" id="page' + page_number + '">';
         phtml+='<div data-role="header">';
         phtml+='<h1>Home Page (' + page_number + ')</h1>';
 
