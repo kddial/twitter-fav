@@ -11,8 +11,19 @@
 <body>
 
 <div data-role="page" id="page1">
-    <div data-role="header">
+    <div data-role="header" id="header1">
         <h1>Home Page</h1>
+
+        <!--  nav bar  -->
+        <div data-role="navbar">
+            <ul>
+            <li><a id="first1" href="#page1" data-icon="arrow-l">First</a></li>
+            <li><a id="prev1" href="#" data-icon="arrow-l" class="ui-disabled">Prev</a></li>
+            <li><a id="next1" href="#page2" data-icon="arrow-r">Next</a></li>
+            <li><a class="last" href="#" data-icon="arrow-r">Last</a></li>
+            </ul>
+        </div>
+
     </div>
     <div data-role="content">
         <ul id="items1" data-role="listview">
@@ -24,16 +35,8 @@
     </div>
 </div>
 
-<!--  nav bar
-    <div data-role="navbar">
-        <ul>
-            <li><a href="#" data-icon="arrow-l" data-iconpos="left">Prev Page</a></li>
-            <li><a href="#">Two</a></li>
-            <li><a href="#" data-icon="arrow-r" data-iconpos="right" >Next Page</a></li>
-        </ul>
-    </div>
 
--->
+
 
 <script language="javascript" type="text/javascript">
 
@@ -45,8 +48,8 @@
             url = urls[i];
             link = "<a href='" + url.url + "' target='_blank'>" + url.url + "</a>";
             text = text.substr(0, url.indices[0]+offset) + link + text.substr(url.indices[1]+offset);
-            console.log(url.indices[0]+offset);
-            console.log(url.indices[1]+url.url.length+offset);
+            //console.log(url.indices[0]+offset);
+            //console.log(url.indices[1]+url.url.length+offset);
             offset = link.length - url.url.length;
         }
         return text;
@@ -100,6 +103,17 @@
         phtml+='<div data-role="page" id="page' + page_number + '">';
         phtml+='<div data-role="header">';
         phtml+='<h1>Home Page (' + page_number + ')</h1>';
+
+        //nav bar
+        phtml+='<div data-role="navbar">';
+        phtml+='<ul>';
+        phtml+='<li><a class="first" href="#page1" data-icon="arrow-l">First</a></li>';
+        phtml+='<li><a id="prev' + page_number + '" href="#page' + (page_number - 1) + '" data-icon="arrow-l">Prev</a></li>';
+        phtml+='<li><a id="next' + page_number + '" href="#page' + (page_number + 1) + '" data-icon="arrow-r">Next</a></li>';
+        phtml+='<li><a class="last" href="#" data-icon="arrow-r">Last</a></li>';
+        phtml+='</ul>';
+        phtml+='</div>';
+
         phtml+='</div>';
         phtml+='<div data-role="content">';
         phtml+='<ul id="items' + page_number + '" data-role="listview">';
@@ -148,9 +162,21 @@
             $('#items' + currentPage).append(shtml).trigger('create');
         });
 
-        // I am not sure how, but just refreshing the first page also refreshes all the pages
-        $('#items1').listview("refresh");
+        // Need this line for Chrome to refresh the first page on start, however this line of code gives error on firefox
+        // $('#items1').listview("refresh");
+
+        //$('#page1').bind('create', function() {
+        //    $('#items1').listview('refresh');
+        //});
+
+        // Update all the navigation buttons
+        $('.last').attr('href', '#page' + currentPage);
+        $('#next' + currentPage).attr('class', 'ui-disabled');
+
+
     });
+
+    // 
 </script>
 </body>
 </html>
