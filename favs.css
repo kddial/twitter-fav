@@ -16,7 +16,7 @@
         padding-left: 10px;
 }
 
-@media screen and (min-width: 768px) and (min-device-width: 800px) {
+@media screen and (min-width: 640px) and (min-device-width: 800px) {
  
    .ui-content {
         padding: 20px;
