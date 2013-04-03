@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div data-role="page" id="page1">
+<div data-role="page" id="page1" data-next="placeholder">
     <div data-role="header" id="header1">
         <h1>Home Page</h1>
 
@@ -100,7 +100,7 @@
         Page is located at "#page + page_number".  ex) index.html#page2 */
     function createListPage (page_number) {
         var phtml='';
-        phtml+='<div data-role="page" id="page' + page_number + '">';
+        phtml+='<div data-role="page" data-next="page' + page_number+1 + '" id="page' + page_number + '">';
         phtml+='<div data-role="header">';
         phtml+='<h1>Home Page (' + page_number + ')</h1>';
 
@@ -110,6 +110,15 @@
         phtml+='<li><a class="first" href="#page1" data-icon="arrow-l">First</a></li>';
         phtml+='<li><a id="prev' + page_number + '" href="#page' + (page_number - 1) + '" data-icon="arrow-l">Prev</a></li>';
         phtml+='<li><a id="next' + page_number + '" href="#page' + (page_number + 1) + '" data-icon="arrow-r">Next</a></li>';
+
+        $( document ).on( "swipeleft", "#page" + page_number, function() {
+            $.mobile.changePage( "#page" + (page_number + 1), { transition: "slide" });
+        });
+
+        $( document ).on( "swiperight", "#page" + page_number, function() {
+            $.mobile.changePage( "#page" + (page_number - 1), { transition: "slide", reverse: true });
+        });
+
         phtml+='<li><a class="last" href="#" data-icon="arrow-r">Last</a></li>';
         phtml+='</ul>';
         phtml+='</div>';
@@ -126,7 +135,8 @@
         $('body').append(phtml);
     }
 
-    $('#page1').bind('pageinit', function() {
+    $('#page1').bind('pageinit', "[data-role='page'].demo-page", function() {
+
     // Read tweets from file "favs.json"
     // CHANGED TO 'favs109' JUST FOR TESTING, CHANGE BACK TO favs.json WHEN DONE
     $.getJSON('favs109.json', function (data) {
@@ -162,8 +172,13 @@
             shtml=shtml+'</li>';
             $('#items' + currentPage).append(shtml).trigger('create');
         });
+
         // Need this line for Chrome to refresh the first page on start, however this line of code gives error on firefox
         $('#items1').listview("refresh");
+
+        $( document ).on( "swipeleft", "#page1", function() {
+            $.mobile.changePage( "#page2", { transition: "slide" });
+        });
 
         // Update all the navigation buttons
         $('.last').attr('href', '#page' + currentPage);
