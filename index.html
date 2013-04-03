@@ -76,6 +76,14 @@
 
         phtml+='<p> <b>Retweeted count:</b> ' + fav_tweet.retweet_count +'</p>';
 
+        phtml+='<h2>User info</h2>';
+        phtml+='<p> <b>Description:</b> ' + fav_tweet.user.description +'</p>';
+        phtml+='<p> <b>Location:</b> ' + fav_tweet.user.location +'</p>';
+        phtml+="<p> <b>Website:</b> <a href='" + fav_tweet.user.url + "'>" + fav_tweet.user.url +'</a></p>';
+        phtml+='<p> <b>Statuses:</b> ' + fav_tweet.user.statuses_count +'</p>';
+        phtml+='<p> <b>Followers:</b> ' + fav_tweet.user.followers_count +'</p>';
+        phtml+='<p> <b>Following:</b> ' + fav_tweet.user.friends_count +'</p>';
+
         // Back button
         phtml+='<p><a href="#" data-rel="back" data-role="button" data-inline="true" data-icon="back">Previous Page</a></p>';
         phtml+='</div>';
