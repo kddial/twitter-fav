@@ -1,6 +1,7 @@
-twitter-fav
-===========
+## twitter-fav ##
 A client that reads and displays favourite tweets from a local JSON file.
+
+Note: This README is in Markdown language. Best viewed at https://gist.github.com/kddial/5298130
 
 #### Team members ####
 Peter Le Bek - c2lebekp
