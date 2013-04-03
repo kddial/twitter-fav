@@ -126,6 +126,7 @@
         $('body').append(phtml);
     }
 
+    $('#page1').bind('pageinit', function() {
     // Read tweets from file "favs.json"
     // CHANGED TO 'favs109' JUST FOR TESTING, CHANGE BACK TO favs.json WHEN DONE
     $.getJSON('favs109.json', function (data) {
@@ -161,20 +162,14 @@
             shtml=shtml+'</li>';
             $('#items' + currentPage).append(shtml).trigger('create');
         });
-
         // Need this line for Chrome to refresh the first page on start, however this line of code gives error on firefox
-        // $('#items1').listview("refresh");
-
-        //$('#page1').bind('create', function() {
-        //    $('#items1').listview('refresh');
-        //});
+        $('#items1').listview("refresh");
 
         // Update all the navigation buttons
         $('.last').attr('href', '#page' + currentPage);
         $('#next' + currentPage).attr('class', 'ui-disabled');
-
-
     });
+});
 
     // 
 </script>
